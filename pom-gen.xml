@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>digital.twinned.api</groupId>
+  <groupId>digital.twinned</groupId>
   <artifactId>java-api-template</artifactId>
   <version>1.0.0</version>
-  
+
 	<properties>
-		<boodskap.version>5.3.0-05</boodskap.version>
+		<boodskap.version>5.2.0-24</boodskap.version>
 		<java.version>11</java.version>
 		<java.target.version>11</java.target.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -139,12 +139,11 @@
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</pluginRepository>
 	</pluginRepositories>
-
+	
 	<repositories>
 		<repository>
 			<id>Alfresco</id>
-			<url>
-				https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
+			<url>https://artifacts.alfresco.com/nexus/content/repositories/public/</url>
 		</repository>
 	</repositories>
 
@@ -173,7 +172,6 @@
 						<configuration>
 							<sources>
 								<source>generated/src/gen/java</source>
-								<source>generated/src/main/java</source>
 							</sources>
 						</configuration>
 					</execution>
@@ -193,8 +191,7 @@
 							<excludeDefaultDirectories>true</excludeDefaultDirectories>
 							<filesets>
 								<fileset>
-									<directory>
-										generated/src/gen/java/twinned/digital/service/base/api</directory>
+									<directory>generated/src/gen/java/twinned/digital/api</directory>
 									<includes>
 										<include>Application.java</include>
 										<include>StringUtil.java</include>
@@ -202,14 +199,34 @@
 									<followSymlinks>false</followSymlinks>
 								</fileset>
 								<fileset>
-									<directory>
-										generated/src/main/java/twinned/digital/service/base/api/impl</directory>
-									<includes>
-										<include>*.java</include>
-									</includes>
-									<followSymlinks>false</followSymlinks>
+									<directory>generated/src/main/java</directory>
 								</fileset>
 							</filesets>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>2.3.1</version>
+				<executions>
+					<execution>
+						<id>server-api</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/api.yaml</inputSpec>
+							<output>generated</output>
+							<modelPackage>twinned.digital.service.base.api.model</modelPackage>
+							<apiPackage>twinned.digital.service.base.api</apiPackage>
+							<invokerPackage>twinned.digital.service.base.api.impl</invokerPackage>
+							<generateModelDocumentation>true</generateModelDocumentation>
+							<generateApiTests>false</generateApiTests>
+							<generateModelTests>false</generateModelTests>
+							<serializableModel>true</serializableModel>
+							<language>msf4j</language>
 						</configuration>
 					</execution>
 				</executions>

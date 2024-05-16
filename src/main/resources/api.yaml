@@ -1,0 +1,77 @@
+swagger: "2.0"
+produces: 
+  - "application/json"
+info: 
+  version: "1.0.0"
+  title: "IoT Digital Twin Analytics"
+  description: "IoT Digital Twinning Analytics API"
+  termsOfService: "https:/boodskap.io/terms-conditions"
+  contact: 
+    name: "Boodskap Team"
+  license: 
+    name: "MIT"
+host: twinned.digital
+basePath: /rest/analytics
+schemes: 
+  - https
+paths:
+  /Dashboard/stats:
+    get:
+      tags:
+        - Dashboard
+      description: dashboard statistics
+      summary: Get dashboard statistics
+      operationId: getDashboardStats
+      consumes:
+        - "*/*"
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/DashboardStatsRes'
+        '401':
+          description: Authentication error
+        '417':
+          description: Platform error
+      security:
+        - apiKey: []
+
+securityDefinitions:
+  apiKey:
+    type: "apiKey"
+    name: "APIKEY"
+    in: "header"
+definitions: 
+  BaseResponse: 
+    type: "object"
+    required:
+      - ok
+    properties: 
+      ok: 
+        type: "boolean"
+      msg:
+        type: "string"
+      trace:
+        type: "string"
+      errorCode:
+        type: "string"
+  DashboardStats: 
+    type: "object"
+    required:
+      - totalAssets
+      - reportedAssets
+    properties: 
+      totalAssets: 
+        type: "integer"
+        format: "int64"
+      reportedAssets: 
+        type: "integer"
+        format: "int64"
+  DashboardStatsRes:
+    allOf:
+    - $ref: '#/definitions/BaseResponse'
+    - $ref: '#/definitions/DashboardStats'
+    - type: object
